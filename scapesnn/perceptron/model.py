@@ -27,6 +27,7 @@ class Perceptron:
         # set weights to zero with additional feature for bias
         w = [0.0 for i in range(features.shape[1]+1)]
         w[0] = self.initial_bias
+        w_delta = np.array([w])
 
         misclassified_ = []
         n_iter = 0
@@ -50,6 +51,7 @@ class Perceptron:
                 if(error):  # misclassified
                     misclassified += 1
                     w[1:] += (self.learning_rate * error * x)
+                    w_delta = np.append(w_delta, [w], axis=0)
 
             misclassified_.append(misclassified)
 
@@ -64,7 +66,7 @@ class Perceptron:
                 break
 
         epochs = [i+1 for i in range(n_iter)]
-        return (w, misclassified_, epochs)
+        return (w, misclassified_, epochs, w_delta)
 
     # pretty much the same thing as train
     # when learning rate is 1 and initial bias is 0
